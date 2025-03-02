@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Book Recommender</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>AI Book Recommender 📚</h1>
+    <input id="userInput" placeholder="Describe what you like to read...">
+    <button onclick="getRecommendation()">Get Recommendation</button>
+    <p id="result"></p>
+    <audio id="audio" controls></audio>
+
+    <script>
+        async function getRecommendation() {
+    const userMessage = document.getElementById("userInput").value;
+    const response = await fetch('/recommend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: userMessage })
+    });
+    const data = await response.json();
+    document.getElementById("result").innerText = data.recommendation;
+    document.getElementById("audio").src = '/static/recommendation.mp3?' + new Date().getTime(); // Prevent caching
+}
+
+    </script>
+</body>
+</html>
